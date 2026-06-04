@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏰 Fort Boyard — Tournoi Coloc</title>
+<title>🏰 Fort Boyard — Tournoi</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,10 +13,11 @@
     <span class="logo">🏰</span>
     <div>
       <h1>Fort Boyard</h1>
-      <p class="subtitle">Tournoi Coloc — Édition 2</p>
+      <p class="subtitle">Tournoi entre amis</p>
     </div>
+    <button class="btn ghost small newgame-btn" id="newGameBtn" hidden>🔄 Nouvelle partie</button>
   </div>
-  <nav class="tabs" id="tabs">
+  <nav class="tabs" id="tabs" hidden>
     <button class="tab active" data-tab="classement">🏆 Classement</button>
     <button class="tab" data-tab="duels">⚔️ Duels &amp; Paris</button>
     <button class="tab" data-tab="awale">🔴 Awalé</button>
@@ -26,27 +27,46 @@
 </header>
 
 <main>
+  <!-- ====================== SETUP ====================== -->
+  <section id="setup" class="view active">
+    <div class="card setup-card">
+      <h2>🎬 Lancer une partie</h2>
+      <p class="hint">Définis les joueurs et le nombre de duels, puis démarre le tournoi.</p>
+
+      <h3>👥 Joueurs <span class="muted-inline">(2 minimum)</span></h3>
+      <div id="playerInputs" class="player-inputs"></div>
+      <button class="btn ghost small" id="addPlayerBtn">➕ Ajouter un joueur</button>
+
+      <h3 style="margin-top:22px">⚔️ Nombre de duels</h3>
+      <div class="seg" id="duelCountSeg">
+        <button data-n="12">12</button>
+        <button data-n="24" class="active">24</button>
+        <button data-n="36">36</button>
+        <button data-n="48">48</button>
+      </div>
+      <p class="hint">Chaque duel oppose 2 joueurs ; les autres peuvent parier. Les épreuves et les adversaires tournent automatiquement.</p>
+
+      <div id="setupError" class="setup-error" hidden></div>
+      <button class="btn big" id="startGameBtn">🚀 Lancer la partie</button>
+    </div>
+  </section>
+
   <!-- ====================== CLASSEMENT ====================== -->
-  <section id="classement" class="view active">
+  <section id="classement" class="view">
     <div class="section-head">
-      <h2>🏆 Classement du tournoi</h2>
+      <h2>🏆 Classement</h2>
       <div class="head-actions">
-        <span class="pill" id="duelsPlayedPill">0 / 24 duels joués</span>
+        <span class="pill" id="duelsPlayedPill">0 / 0 duels joués</span>
       </div>
     </div>
-
     <div class="podium" id="podium"></div>
-
     <div class="card">
       <table class="ranking" id="rankingTable">
         <thead>
           <tr>
-            <th>Rang</th>
-            <th class="left">Joueur</th>
-            <th>Duels<br>gagnés</th>
-            <th>Points<br>Duels</th>
-            <th>Gains<br>Paris (net)</th>
-            <th>Paris<br>réussis</th>
+            <th>Rang</th><th class="left">Joueur</th>
+            <th>Duels<br>gagnés</th><th>Points<br>Duels</th>
+            <th>Gains<br>Paris (net)</th><th>Paris<br>réussis</th>
             <th class="total">TOTAL</th>
           </tr>
         </thead>
@@ -54,53 +74,43 @@
       </table>
       <p class="hint">TOTAL = Points Duels + Gains Paris (net). Égalités : 1) duels gagnés, 2) paris réussis, 3) pile ou face.</p>
     </div>
-
-    <div class="card danger-zone">
-      <button class="btn ghost" id="resetBtn">♻️ Réinitialiser le tournoi</button>
-    </div>
   </section>
 
   <!-- ====================== DUELS ====================== -->
   <section id="duels" class="view">
     <div class="section-head">
       <h2>⚔️ Duels &amp; Paris</h2>
-      <div class="head-actions">
-        <label class="filter">Round
-          <select id="roundFilter">
-            <option value="all">Tous</option>
-            <option value="1">Round 1</option>
-            <option value="2">Round 2</option>
-          </select>
-        </label>
-      </div>
     </div>
-    <p class="hint">Les 2 joueurs qui ne jouent pas peuvent parier <b>avant</b> le duel (mise 1–3 pts). Pari correct&nbsp;→&nbsp;<b>+mise</b>, pari raté&nbsp;→&nbsp;<b>−mise</b> sur le total.</p>
+    <p class="hint">Les joueurs qui ne jouent pas peuvent parier <b>avant</b> le duel (mise 1–3 pts). Pari correct&nbsp;→&nbsp;<b>+mise</b>, pari raté&nbsp;→&nbsp;<b>−mise</b>.</p>
     <div id="duelsList"></div>
   </section>
 
   <!-- ====================== AWALÉ ====================== -->
   <section id="awale" class="view">
     <div class="section-head">
-      <h2>🔴🟡⬜ Awalé — Patterns</h2>
+      <h2>🔴🟡⬜ Awalé — Pattern aléatoire</h2>
       <div class="head-actions">
-        <span class="legend">🔴 Rouge (J1) &nbsp; 🟡 Jaune (J2) &nbsp; ⬜ Barrette grise</span>
+        <span class="legend">🔴 J1 &nbsp; 🟡 J2 &nbsp; ⬜ Neutre</span>
       </div>
     </div>
 
-    <div class="awale-nav" id="awaleNav"></div>
-
     <div class="card awale-card">
-      <div class="awale-title">
-        <h3 id="awaleTitle">Pattern 1 / 7</h3>
-        <span class="pill" id="awaleProgress">0 / 10 révélées</span>
+      <div class="awale-toolbar">
+        <label class="filter">Cases
+          <select id="awaleLen">
+            <option>6</option><option>8</option><option selected>10</option><option>12</option>
+          </select>
+        </label>
+        <button class="btn" id="genPatternBtn">🎲 Nouveau pattern</button>
+        <span class="pill" id="awaleProgress">— / —</span>
       </div>
-      <div class="awale-board" id="awaleBoard"></div>
+      <div class="awale-board" id="awaleBoard"><p class="hint" style="margin:30px">Clique sur « 🎲 Nouveau pattern » pour générer un pattern à reconstituer.</p></div>
       <div class="awale-controls">
         <button class="btn" id="revealNextBtn">👁️ Révéler la suivante</button>
         <button class="btn secondary" id="revealAllBtn">✨ Tout révéler</button>
         <button class="btn ghost" id="hideAllBtn">🙈 Tout cacher</button>
       </div>
-      <p class="hint">Astuce épreuve : révèle les cases une à une, puis « Tout cacher » et laisse les joueurs reconstituer le pattern avec les bâtonnets.</p>
+      <p class="hint">Génère un pattern, révèle les cases une à une, puis « Tout cacher » et laisse les joueurs le reconstituer avec les bâtonnets.</p>
     </div>
   </section>
 
@@ -109,33 +119,32 @@
     <div class="section-head"><h2>🔤 Baguettes — Lettres Scrabble</h2></div>
 
     <div class="card">
-      <h3>🎯 Générateur de mot cible</h3>
-      <p class="hint">Tire un mot au hasard pour l'épreuve. Les lettres Scrabble à mélanger au centre s'affichent ci-dessous.</p>
+      <h3>1️⃣ Lettres disponibles</h3>
+      <p class="hint">Clique sur les lettres que les joueurs possèdent (clique plusieurs fois pour en avoir plusieurs). Puis valide le set. <b>?</b> = joker.</p>
+      <div class="kbd" id="letterKeyboard"></div>
+      <div class="pool-area">
+        <div class="pool-label">Set actuel :</div>
+        <div class="tiles" id="poolTiles"><span class="fw-empty">aucune lettre</span></div>
+      </div>
       <div class="gen-controls">
-        <label class="filter">Difficulté
-          <select id="difficulty">
-            <option value="easy">Facile (4–5 lettres)</option>
-            <option value="medium" selected>Moyen (6–7 lettres)</option>
-            <option value="hard">Difficile (8–10 lettres)</option>
-            <option value="any">Au hasard</option>
-          </select>
-        </label>
-        <button class="btn" id="genWordBtn">🎲 Nouveau mot</button>
-        <button class="btn secondary" id="toggleWordBtn">👁️ Afficher / Cacher</button>
+        <button class="btn secondary" id="validatePoolBtn">✅ Valider le set</button>
+        <button class="btn ghost" id="clearPoolBtn">🗑️ Vider</button>
+        <span class="pill" id="poolStatus" hidden></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>2️⃣ Mot cible</h3>
+      <p class="hint">Le générateur tire un mot formable <b>uniquement</b> avec les lettres validées ci-dessus.</p>
+      <div class="gen-controls">
+        <button class="btn" id="genWordBtn" disabled>🎲 Générer un mot</button>
+        <button class="btn secondary" id="toggleWordBtn" disabled>👁️ Afficher / Cacher</button>
+        <button class="btn ghost" id="showAllWordsBtn" disabled>📜 Tous les mots possibles</button>
       </div>
       <div class="target-word hidden" id="targetWord">
         <div class="word-text" id="wordText">?</div>
         <div class="tiles" id="wordTiles"></div>
         <div class="word-meta" id="wordMeta"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>🧩 Trouve les mots possibles</h3>
-      <p class="hint">Entre les lettres disponibles (jeton « ? » = joker). On liste les mots du dictionnaire que tu peux former.</p>
-      <div class="gen-controls">
-        <input type="text" id="lettersInput" placeholder="ex : aeprst?" maxlength="15" autocomplete="off">
-        <button class="btn" id="findWordsBtn">🔎 Chercher</button>
       </div>
       <div id="foundWords" class="found-words"></div>
     </div>
@@ -149,21 +158,19 @@
   <!-- ====================== RÈGLES ====================== -->
   <section id="regles" class="view">
     <div class="section-head"><h2>📋 Règles</h2></div>
-
     <div class="card">
       <h3>🎲 Classement &amp; Paris</h3>
       <ul class="rules-list">
         <li><b>⚔️ Victoire duel :</b> le gagnant remporte 1 point. Le perdant ne gagne rien.</li>
-        <li><b>👥 Qui parie ?</b> Les 2 joueurs qui ne participent pas au duel. On ne parie pas sur son propre duel.</li>
+        <li><b>👥 Qui parie ?</b> Les joueurs qui ne participent pas au duel. On ne parie pas sur son propre duel.</li>
         <li><b>💰 Mise :</b> libre de 1 à 3 points par duel.</li>
-        <li><b>📈 Pari gagnant :</b> mise doublée → net <b>+mise</b> sur le total.</li>
-        <li><b>📉 Pari perdant :</b> mise perdue → net <b>−mise</b> sur le total.</li>
-        <li><b>💳 Crédit :</b> on peut parier même à 0 ou en négatif. Le solde peut être négatif.</li>
-        <li><b>🏆 Vainqueur :</b> meilleur TOTAL de points à la fin des 24 duels.</li>
+        <li><b>📈 Pari gagnant :</b> net <b>+mise</b> sur le total.</li>
+        <li><b>📉 Pari perdant :</b> net <b>−mise</b> sur le total.</li>
+        <li><b>💳 Crédit :</b> on peut parier même à 0 ou en négatif.</li>
+        <li><b>🏆 Vainqueur :</b> meilleur TOTAL à la fin des duels.</li>
         <li><b>🤝 Égalité :</b> 1) duels gagnés, 2) paris réussis, 3) pile ou face.</li>
       </ul>
     </div>
-
     <div class="card">
       <h3>🏰 Les épreuves</h3>
       <div id="epreuvesList"></div>
@@ -171,7 +178,7 @@
   </section>
 </main>
 
-<footer class="foot">Tournoi Fort Boyard — Coloc • données sauvegardées localement sur cet appareil</footer>
+<footer class="foot">Tournoi Fort Boyard • données sauvegardées localement sur cet appareil</footer>
 
 <script src="app.js"></script>
 </body>

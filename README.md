@@ -1,6 +1,6 @@
-# 🏰 Fort Boyard — Tournoi Coloc
+# 🏰 Fort Boyard — Tournoi
 
-Petite app web (sans installation) pour animer une soirée **Fort Boyard entre colocs** : suivi des scores, système de paris, patterns d'Awalé et générateur de mots Scrabble.
+Petite app web (sans installation) pour animer une soirée **Fort Boyard entre amis** : suivi des scores, système de paris, Awalé et générateur de mots Scrabble. Fonctionne pour **n'importe quel groupe**.
 
 Tout tient dans 3 fichiers (`index.html`, `style.css`, `app.js`) et fonctionne **hors-ligne**. Les données (duels, gagnants, paris) sont **sauvegardées automatiquement** dans le navigateur de l'appareil utilisé.
 
@@ -18,7 +18,10 @@ Tout tient dans 3 fichiers (`index.html`, `style.css`, `app.js`) et fonctionne *
 
 ## 🎲 Comment l'utiliser pendant la soirée
 
-L'app a **5 onglets** :
+### 🎬 Au lancement — créer la partie
+Au premier écran, tu **saisis les joueurs** (2 minimum, bouton « Ajouter un joueur ») et tu choisis le **nombre de duels** (12, 24, 36 ou 48). Au clic sur **« Lancer la partie »**, les duels sont générés automatiquement : les épreuves et les adversaires tournent de façon équilibrée (chaque joueur joue à peu près autant). Le bouton **« Nouvelle partie »** (en haut) permet de tout recommencer avec un autre groupe.
+
+Une fois la partie lancée, l'app a **5 onglets** :
 
 ### 🏆 Classement
 Le podium et le tableau se calculent **tout seuls** à partir des duels et des paris. Rien à remplir ici.
@@ -35,16 +38,17 @@ Les 24 duels sont déjà préparés (Round 1 & 2). Pour chaque duel :
 Le classement se met à jour instantanément.
 
 ### 🔴 Awalé
-Les 7 patterns à reconstituer (🔴 rouge = J1, 🟡 jaune = J2, ⬜ barrette grise).
+Pattern **généré aléatoirement** (🔴 rouge = J1, 🟡 jaune = J2, ⬜ neutre).
+- Choisis le nombre de cases (6/8/10/12) et clique **« Nouveau pattern »** : un pattern aléatoire est créé, toutes cases cachées.
 - **Révéler la suivante** : dévoile les cases une à une devant les joueurs.
 - **Tout révéler** / **Tout cacher** : pour montrer le pattern complet puis le masquer.
 - Tu peux aussi cliquer une case pour la révéler/cacher individuellement.
 
-👉 Déroulé conseillé : révèle le pattern case par case, puis **Tout cacher**, et laisse les joueurs le reconstituer avec les bâtonnets.
+👉 Déroulé conseillé : génère un pattern, révèle-le case par case, puis **Tout cacher**, et laisse les joueurs le reconstituer avec les bâtonnets.
 
 ### 🔤 Scrabble (épreuve « Baguettes »)
-- **Générateur de mot cible** : tire un mot au hasard selon la difficulté (4-5 / 6-7 / 8-10 lettres). Affiche les jetons Scrabble à mélanger au centre + leur valeur, et **prévient s'il faut un joker**. Bouton *Afficher / Cacher* pour ne pas spoiler les joueurs.
-- **Trouve les mots possibles** : entre tes lettres (`?` = joker) pour lister les mots réalisables.
+1. **Lettres disponibles** : clique sur les lettres que les joueurs possèdent (plusieurs fois pour en avoir plusieurs ; `?` = joker), puis **« Valider le set »**.
+2. **Mot cible** : le générateur tire un mot formable **uniquement** avec les lettres validées. *Afficher / Cacher* pour ne pas spoiler, et *Tous les mots possibles* pour voir toutes les options du set.
 
 ### 📋 Règles
 Le rappel des règles de classement/paris et le détail des 12 épreuves avec le matériel nécessaire.
@@ -53,14 +57,14 @@ Le rappel des règles de classement/paris et le détail des 12 épreuves avec le
 
 ## 👥 Joueurs & épreuves
 
-**Joueurs :** Loulou · Flo · Livliv · El Pet
-**12 épreuves**, jouées chacune 2 fois → **24 duels**. Chaque joueur dispute 12 duels ; les 2 autres sont spectateurs/parieurs.
+**Joueurs :** définis librement au lancement (2 minimum).
+**12 épreuves** qui tournent automatiquement. Le nombre de duels (12/24/36/48) se choisit au démarrage. À chaque duel, 2 joueurs s'affrontent et les autres sont spectateurs/parieurs.
 
 ---
 
-## ♻️ Réinitialiser
+## ♻️ Nouvelle partie
 
-Bouton **« Réinitialiser le tournoi »** en bas de l'onglet Classement : remet tous les scores, duels et paris à zéro (utile pour rejouer une autre soirée).
+Bouton **« Nouvelle partie »** en haut de l'écran : repart de l'écran de configuration pour rejouer avec un autre groupe (remet tout à zéro).
 
 ---
 

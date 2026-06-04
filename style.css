@@ -204,6 +204,40 @@ table.ranking tr.rank-1 td{background:rgba(244,197,66,.07)}
 .danger-zone{text-align:center;background:transparent;border:none;box-shadow:none;padding:0}
 .foot{text-align:center;color:var(--muted);font-size:11.5px;padding:20px}
 
+/* ---------- Setup ---------- */
+.newgame-btn{margin-left:auto}
+.setup-card{max-width:560px;margin:10px auto}
+.setup-card h2{color:var(--gold);font-size:22px;margin-bottom:6px}
+.setup-card h3{margin-top:18px;display:flex;align-items:center;gap:8px}
+.muted-inline{color:var(--muted);font-weight:400;font-size:13px}
+.player-inputs{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.player-row{display:flex;gap:8px;align-items:center}
+.player-row .pnum{color:var(--gold);font-weight:800;width:22px;text-align:center}
+.player-row input{flex:1}
+.player-row .del{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:8px 11px;cursor:pointer;font-size:14px}
+.player-row .del:hover{color:var(--red);border-color:var(--red)}
+.seg{display:flex;gap:8px;margin-top:8px}
+.seg button{flex:1;background:var(--stone-700);border:1px solid var(--line);color:var(--text);
+  padding:12px;border-radius:10px;font-weight:800;font-size:16px;cursor:pointer;transition:.15s}
+.seg button:hover{border-color:var(--muted)}
+.seg button.active{background:var(--gold);color:#231a04;border-color:var(--gold)}
+.btn.big{width:100%;margin-top:18px;padding:14px;font-size:16px}
+.setup-error{background:rgba(228,80,77,.12);border:1px solid var(--red);color:#ff9b99;
+  border-radius:9px;padding:10px 13px;font-size:13px;margin-top:14px}
+
+/* ---------- Scrabble keyboard / pool ---------- */
+.kbd{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.kbd button{width:42px;height:42px;border-radius:8px;background:var(--stone-700);
+  border:1px solid var(--line);color:var(--text);font-weight:800;font-size:15px;cursor:pointer;transition:.12s}
+.kbd button:hover{border-color:var(--gold);color:var(--gold)}
+.kbd button.joker{background:var(--stone-600)}
+.pool-area{margin:14px 0;padding:12px;background:var(--stone-700);border:1px solid var(--line);border-radius:10px}
+.pool-label{color:var(--muted);font-size:12px;margin-bottom:8px}
+.pool-tile-wrap{position:relative;cursor:pointer}
+.pool-tile-wrap .rm{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;
+  width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800}
+.awale-toolbar{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+
 @media(max-width:560px){
   .podium-spot{width:96px}
   .word-text{font-size:26px}
