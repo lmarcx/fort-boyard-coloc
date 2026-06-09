@@ -1,0 +1,61 @@
+name: Vercel Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: false
+
+jobs:
+  deploy-production:
+    name: Deploy production
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check JavaScript syntax
+        run: node --check app.js
+
+      - name: Check static site references
+        run: node tools/check-static-site.mjs
+
+      - name: Validate Vercel secrets
+        run: |
+          test -n "$VERCEL_TOKEN" || (echo "Missing VERCEL_TOKEN secret" && exit 1)
+          test -n "$VERCEL_ORG_ID" || (echo "Missing VERCEL_ORG_ID secret" && exit 1)
+          test -n "$VERCEL_PROJECT_ID" || (echo "Missing VERCEL_PROJECT_ID secret" && exit 1)
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build Vercel output
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy Vercel production
+        id: deploy
+        run: |
+          deployment_url="$(vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")"
+          echo "url=$deployment_url" >> "$GITHUB_OUTPUT"
+          echo "### Vercel Production" >> "$GITHUB_STEP_SUMMARY"
+          echo "$deployment_url" >> "$GITHUB_STEP_SUMMARY"

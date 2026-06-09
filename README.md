@@ -16,6 +16,26 @@ Tout tient dans 3 fichiers (`index.html`, `style.css`, `app.js`) et fonctionne *
 
 ---
 
+## CI/CD GitHub + Vercel
+
+Le depot contient maintenant une pipeline GitHub Actions :
+
+- `CI` verifie la syntaxe JavaScript et les references statiques a chaque pull request et push sur `main`.
+- `Vercel Preview` deploie une preview Vercel pour les pull requests du depot.
+- `Vercel Production` deploie en production a chaque push sur `main`.
+
+Secrets GitHub a creer dans `Settings > Secrets and variables > Actions` :
+
+- `VERCEL_TOKEN`
+- `VERCEL_ORG_ID`
+- `VERCEL_PROJECT_ID`
+
+Pour recuperer les deux IDs Vercel : installe le CLI Vercel, lance `vercel login`, puis `vercel link` a la racine du projet. Les valeurs sont dans `.vercel/project.json`. Ne commit pas le dossier `.vercel`.
+
+Le fichier `vercel.json` force un projet statique sans build, sert la racine du depot, ajoute quelques headers de securite, et desactive les deploiements automatiques Vercel for GitHub pour eviter un doublon avec GitHub Actions.
+
+---
+
 ## 🎲 Comment l'utiliser pendant la soirée
 
 ### 🎬 Au lancement — créer la partie
